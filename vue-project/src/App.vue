@@ -21,17 +21,19 @@
         <button v-on:click="removeTodo($index)">del</button>
       </li>
     </ul>
+    <component-a father-msg="我想要从父组件传入子组件的值"></component-a>
   </div>
 </template>
 
 <script>
 // import Hello from './components/Hello'
-
+import Store from './store';
+import componentA from './components/componentA';
 export default {
   data (){
     return {
       msg:"第一个vue.js",
-      items:[],
+      items:Store.fetch(),
       newItem:"",
       message:"hello Vue",
       newTodo:"",
@@ -41,6 +43,15 @@ export default {
     }
 
   },
+  watch:{
+    items:{
+      handler:function(items){
+        Store.save(items)
+      },
+      deep:true
+    }
+  },
+  components:{componentA},
   methods:{
     toggleFinished:function(item){
       return item.isFinished = !item.isFinished;
